@@ -475,34 +475,29 @@ describe('analyzeChord - Triads', () => {
     });
 
     describe('Minor triads', () => {
-        // NOTE: There's a known issue where madd#9 pattern [0,3,7,15] normalizes
-        // to [0,3,7] (same as minor) and has higher priority. This causes minor
-        // triads to sometimes be labeled as 'madd#9'. This is a pattern definition
-        // issue that should be fixed in CHORD_PATTERNS.
         it('recognizes C minor triad', () => {
             const result = analyzeChord(midiChord('C4', 'Eb4', 'G4'));
             expect(result?.root).toBe('C');
-            // Accept both 'm' and 'madd#9' due to known pattern collision bug
-            expect(['m', 'madd#9']).toContain(result?.quality);
+            expect(result?.quality).toBe('m');
         });
 
         it('recognizes A minor triad', () => {
             const result = analyzeChord(midiChord('A3', 'C4', 'E4'));
             expect(result?.root).toBe('A');
-            expect(['m', 'madd#9']).toContain(result?.quality);
+            expect(result?.quality).toBe('m');
         });
 
         it('recognizes D minor triad', () => {
             const result = analyzeChord(midiChord('D3', 'F3', 'A3'));
             expect(result?.root).toBe('D');
-            expect(['m', 'madd#9']).toContain(result?.quality);
+            expect(result?.quality).toBe('m');
         });
 
         it('recognizes F# minor triad', () => {
             const result = analyzeChord(midiChord('F#3', 'A3', 'C#4'));
             // F# and Gb are enharmonic
             expect(['F#', 'Gb']).toContain(result?.root);
-            expect(['m', 'madd#9']).toContain(result?.quality);
+            expect(result?.quality).toBe('m');
         });
     });
 
@@ -1094,8 +1089,7 @@ describe('analyzeChord - Inversions', () => {
         it('recognizes A minor 1st inversion (C in bass)', () => {
             const result = analyzeChord(midiChord('C3', 'E3', 'A3'));
             expect(result?.root).toBe('A');
-            // Pattern collision may affect quality naming
-            expect(['m', 'madd#9']).toContain(result?.quality);
+            expect(result?.quality).toBe('m');
             expect(result?.bass).toBe('C');
         });
     });
@@ -1253,15 +1247,13 @@ describe('analyzeChord - Regression Tests', () => {
     it('identifies Am correctly (not as C major)', () => {
         const result = analyzeChord(midiChord('A3', 'C4', 'E4'));
         expect(result?.root).toBe('A');
-        // Due to pattern collision bug, may be 'm' or 'madd#9'
-        expect(['m', 'madd#9']).toContain(result?.quality);
+        expect(result?.quality).toBe('m');
     });
 
     it('identifies Em correctly (not as CMaj7)', () => {
         const result = analyzeChord(midiChord('E3', 'G3', 'B3'));
         expect(result?.root).toBe('E');
-        // Due to pattern collision bug, may be 'm' or 'madd#9'
-        expect(['m', 'madd#9']).toContain(result?.quality);
+        expect(result?.quality).toBe('m');
     });
 
     it('correctly prioritizes 7th chord over 6th chord inversion', () => {

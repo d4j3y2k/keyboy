@@ -498,7 +498,10 @@ export const CHORD_PATTERNS: ChordPattern[] = [
     { name: 'madd11', intervals: normalizeIntervals([0, 3, 7, 17]), priority: 40, allowOmit5th: true },
     { name: 'add#11', intervals: normalizeIntervals([0, 4, 7, 18]), priority: 40 },
     { name: 'add#9', intervals: normalizeIntervals([0, 4, 7, 15]), priority: 41, allowOmit5th: true },
-    { name: 'madd#9', intervals: normalizeIntervals([0, 3, 7, 15]), priority: 41, allowOmit5th: true },
+    // NOTE: 'madd#9' removed - intervals [0,3,7,15] normalize to [0,3,7] (same as minor)
+    // because #9 (15) and b3 (3) are the same pitch class. This caused minor triads
+    // to be misidentified as 'madd#9'. If a minor chord with compound #9 is played,
+    // it will correctly be identified as minor with an extra tension.
     { name: '(add b3)', intervals: [0, 3, 4, 7], priority: 40 },
     { name: 'm(add 3)', intervals: [0, 3, 4, 7], priority: 39 },
 
